@@ -1,135 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop - lesson 7: collision detection</title>
-    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+<title>The Frustrating Game</title>
+<script type="text/javascript" src="quackgine.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+<style>
+canvas{
+	position: absolute;
+	left:0px;
+	top:0px;
+	border:1px solid black;
+}
+</style>
 </head>
 <body>
-
-<canvas id="myCanvas" width="480" height="320"></canvas>
-
+<canvas width="500" height="500" id="canvas"></canvas>
 <script>
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    var ballRadius = 10;
-    var x = canvas.width/2;
-    var y = canvas.height-30;
-    var dx = 2;
-    var dy = -2;
-    var paddleHeight = 10;
-    var paddleWidth = 75;
-    var paddleX = (canvas.width-paddleWidth)/2;
-    var rightPressed = false;
-    var leftPressed = false;
-    var brickRowCount = 5;
-    var brickColumnCount = 3;
-    var brickWidth = 75;
-    var brickHeight = 20;
-    var brickPadding = 10;
-    var brickOffsetTop = 30;
-    var brickOffsetLeft = 30;
-    var bricks = [];
-    for(c=0; c<brickColumnCount; c++) {
-        bricks[c] = [];
-        for(r=0; r<brickRowCount; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
-        }
-    }
-    document.addEventListener("keydown", keyDownHandler, false);
-    document.addEventListener("keyup", keyUpHandler, false);
-    function keyDownHandler(e) {
-        if(e.keyCode == 39) {
-            rightPressed = true;
-        }
-        else if(e.keyCode == 37) {
-            leftPressed = true;
-        }
-    }
-    function keyUpHandler(e) {
-        if(e.keyCode == 39) {
-            rightPressed = false;
-        }
-        else if(e.keyCode == 37) {
-            leftPressed = false;
-        }
-    }
-    function collisionDetection() {
-        for(c=0; c<brickColumnCount; c++) {
-            for(r=0; r<brickRowCount; r++) {
-                var b = bricks[c][r];
-                if(b.status == 1) {
-                    if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-                        dy = -dy;
-                        b.status = 0;
-                    }
-                }
-            }
-        }
-    }
-    function drawBall() {
-        ctx.beginPath();
-        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
-    }
-    function drawPaddle() {
-        ctx.beginPath();
-        ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
-    }
-    function drawBricks() {
-        for(c=0; c<brickColumnCount; c++) {
-            for(r=0; r<brickRowCount; r++) {
-                if(bricks[c][r].status == 1) {
-                    var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
-                    var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-                    bricks[c][r].x = brickX;
-                    bricks[c][r].y = brickY;
-                    ctx.beginPath();
-                    ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                    ctx.fillStyle = "#0095DD";
-                    ctx.fill();
-                    ctx.closePath();
-                }
-            }
-        }
-    }
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawBricks();
-        drawBall();
-        drawPaddle();
-        collisionDetection();
-        if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-            dx = -dx;
-        }
-        if(y + dy < ballRadius) {
-            dy = -dy;
-        }
-        else if(y + dy > canvas.height-ballRadius) {
-            if(x > paddleX && x < paddleX + paddleWidth) {
-                dy = -dy;
-            }
-            else {
-                alert("GAME OVER");
-                document.location.reload();
-            }
-        }
-        if(rightPressed && paddleX < canvas.width-paddleWidth) {
-            paddleX += 5;
-        }
-        else if(leftPressed && paddleX > 0) {
-            paddleX -= 5;
-        }
-        x += dx;
-        y += dy;
-    }
-    setInterval(draw, 10);
-</script>
+var canvas = document.getElementById("canvas");
+var gapY = Math.round(Math.random()*400 + 50);
+var gapX = 500;
 
+var score = 0;
+var state = 1;
+var miss = 0;
+
+var wallSpr = new Sprite("realWall.png",100,500,100,500,1);
+var wall = [];
+wall[0] = new GameObject(gapX,gapY-501,wallSpr,0,"wall");
+wall[1] = new GameObject(gapX,gapY + 1,wallSpr,0,"wall");
+
+canvas.onmousedown = function(){
+	if(state != 2){
+		state = 2;
+		console.log(state);
+		score = 0;
+		gapY = Math.round(Math.random()*400 + 50);
+		gapX = 500;
+	}
+}
+
+
+
+setInterval(update,1000/game.fps);
+function update(){
+	ctx.fillStyle = "#99ccff";
+	ctx.fillRect(0,0,500,500);
+	if(state == 1){
+		ctx.font = "50px Montserrat";
+		ctx.textAlign = "center";
+		ctx.fillStyle = "#000000";
+		ctx.fillText("Click to Start!",250+1,250);
+		ctx.fillText("Click to Start!",250-1,250);
+		ctx.fillText("Click to Start!",250,250+1);
+		ctx.fillText("Click to Start!",250,250-1);
+		ctx.fillStyle = "#ffffff";
+		ctx.fillText("Click to Start!",250,250);
+	}
+
+	if(state == 2){
+	gapX -= 5;
+	if(gapX < -100){
+		gapX = 500;
+		gapY = Math.round(Math.random()*400 + 50);
+		score += 1;
+	}
+
+	wall[0].x = gapX;
+	wall[1].x = gapX;
+	wall[0].y = gapY - 501;
+	wall[1].y = gapY + 1;
+
+	wall[0].draw();
+	wall[1].draw();
+
+	ctx.font = "30px Montserrat";
+	ctx.textAlign = "center";
+	ctx.fillStyle = "#000000";
+	ctx.fillText(score,250+1,35);
+	ctx.fillText(score,250-1,35);
+	ctx.fillText(score,250,35+1);
+	ctx.fillText(score,250,35-1);
+	ctx.fillStyle = "#ffffff";
+	ctx.fillText(score,250,35);
+
+	if(checkPointTouch(mouse.x,mouse.y,wall[0]) || checkPointTouch(mouse.x,mouse.y,wall[1])){
+		console.log(mouse.y);
+		state = 3;
+		miss = Math.max(mouse.y,gapY) - Math.min(mouse.y,gapY);
+	}
+	}
+
+	if(state == 3){
+		ctx.font = "50px Montserrat";
+		ctx.textAlign = "center";
+		drawTextOutlined("Score:",250,225,"#ffffff","#000000");
+		drawTextOutlined(score,250,275,"#ffffff","#000000");
+
+		ctx.font = "28px Montserrat";
+		ctx.textAlign = "center";
+		if(miss == 1){
+			drawTextOutlined("You were " + miss + " pixel from the gap!",250,50,"#ffffff","#000000");
+		}else{
+			drawTextOutlined("You were " + miss + " pixels from the gap!",250,50,"#ffffff","#000000");
+		}
+		
+		ctx.font = "50px Montserrat";
+		drawTextOutlined("Click to try again!",250,450,"#ffffff","#000000");
+	}
+}
+</script>
 </body>
 </html>
