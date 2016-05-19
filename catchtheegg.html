@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<body>
+<center>
+<canvas id="ctx" width="500" height="500" style="border:1px solid #000000;"></canvas> <br>
+<button type="button" onclick="reset()">RESET</button> <button type="button" onclick="resetHighscore()">RESET HIGHSCORE</button>
+<a id="download">Download as image</a>
+</center>
+<script>
+var ctx = document.getElementById("ctx").getContext("2d");
+
+var playerImg = new Image();
+	playerImg.src = "img/basket.png";
+	
+var trollImg =  new Image();
+	trollImg.src = "http://vignette2.wikia.nocookie.net/world-war-2/images/9/9a/Troll-face.jpg/revision/latest?cb=20140809003716";
+	
+var gameScore = 0;
+var gameState = 1;	
+
+//var regneStykke = 1.6726 * Math.pow(10,-27);
+
+function reset() {
+gameScore = 0;
+player.x = 205;
+egg1.x = 250;
+egg1.y = 0;
+bird.x = 250;
+bird.spd = 2;
+gameState = 1;
+}
+
+
+function resetHighscore() {
+	if (confirm("Are you sure you want to delete your highscore? \nThis can not be undone.")){
+gameScore = 0;
+player.x = 205;
+egg1.x = 250;
+egg1.y = 0;
+bird.x = 250;
+bird.spd = 2;
+gameState = 1;
+localStorage.setItem("highscore", 0);
+}
+}
+
+function reset2(){
+gameScore = 1267818672;
+player.x = 205;
+egg1.x = 250;
+egg1.y = 0;
+bird.x = 250;
+bird.spd = 2;
+gameState = 1;
+}
+
+
+function eggPoint(newX,newY) {
+this.x = newX;
+this.y = newY;
+this.spdY = 2;
+this.move = function(){
+this.y += this.spdY;
+if (this.y > 470 && this.x + 5 < player.x2 && this.x + 5 > player.x && this.y < 500) {
+this.y = bird.y;
+this.x = bird.x + 5;
+gameScore += 1;
+}
+if (this.y > 500) {
+gameState = 2;
+}
+}
+
+}
+
+var bird = new Object();
+bird.x = 250;
+bird.y = 11;
+bird.spd = 2;
+
+var player = new Object();
+player.x = 205;
+player.x2 = player.x + 90;
+player.y = 470;
+player.spd = 1.7;
+player.pressingRight = false;
+player.pressingLeft = false;
+
+var egg1 = new eggPoint(250,0);
+
+document.onkeydown = function(event){
+        if(event.keyCode === 39)        //d
+                player.pressingRight = true;
+        else if(event.keyCode === 37) //a
+                player.pressingLeft = true;
+		else if (event.keyCode === 13) {
+		reset();
+		} else if (event.keyCode === 88) {
+		reset2();
+		}
+}
+document.onkeyup = function(event){
+        if(event.keyCode === 39)        //d
+                player.pressingRight = false;
+        else if(event.keyCode === 37) //a
+                player.pressingLeft = false;
+}
+
+
+setInterval(update,1);
+function update() {
+ctx.clearRect(0,0,500,500);
+
+if (gameState == 1) {
+if (player.pressingRight) {player.x += player.spd;}
+if (player.pressingLeft) {player.x -= player.spd;}
+
+player.x2 = player.x + 90;
+
+if (bird.x + 10 > 499) {bird.spd = -Math.random()*3;}
+if (bird.x +10 < 1) {bird.spd = Math.random()*3;}
+
+if (player.x + 45 > 499) {player.x = 454;}
+if (player.x +45 < 1) {player.x = -44;}
+
+bird.x += bird.spd;
+
+ctx.fillStyle="#0099FF";
+ctx.fillRect(0,0,500,500);
+
+ctx.fillStyle="#FF0000";
+ctx.fillRect(bird.x,bird.y,20,20);
+
+//egg1 controll
+egg1.move();
+
+//ctx.fillStyle="#FF0000";
+ctx.fillStyle="#FFFFFF";
+ctx.fillRect(egg1.x,egg1.y,10,10);
+//ctx.drawImage(trollImg, egg1.x, egg1.y,10,10);
+
+
+//ctx.fillStyle="#33CC33";
+//ctx.fillRect(player.x,player.y,90,30);
+ctx.drawImage(playerImg, player.x, player.y,90,30);
+
+
+//score
+ctx.font = "30px Arial";
+ctx.fillStyle = "white";
+ctx.textAlign = "left";
+ctx.fillText("Score: " + gameScore,5,30);
+}
+
+if (gameState == 2) {
+ctx.fillStyle="#FFFFFF";
+ctx.fillRect(0,0,500,500);
+
+
+
+
+
+ctx.font = "50px Arial";
+ctx.fillStyle = "red";
+ctx.textAlign = "center";
+ctx.fillText("GAME OVER",250,150);
+
+ctx.font = "30px Arial";
+ctx.fillStyle = "black";
+ctx.fillText("Score: " + gameScore,250,250);
+
+if (typeof(Storage) != "undefined") {
+    // Store
+	if (localStorage.getItem("highscore") < gameScore) {
+	localStorage.setItem("highscore", gameScore);
+	}
+    
+    // Retrieve
+	ctx.fillStyle = "black";
+    ctx.fillText("HighScore: " + localStorage.getItem("highscore"),250,350);
+} else {
+ctx.fillStyle = "black";
+    ctx.fillText("Local Storage not available",250,350);
+}
+
+
+
+//ctx.fillText(regneStykke,250,450);
+
+}
+
+
+}
+
+function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+}
+
+document.getElementById("download").onclick = function(){
+downloadCanvas(document.getElementById("download"),'ctx','test.png');
+}
+
+
+</script>
+</body>
+</html>
