@@ -33,12 +33,15 @@ game.fps = 30;
 
 // Constructors
 
-function GameObject(x,y,sprite,imgSpeed,name){
+function GameObject(x,y,sprite,displayWidth,displayHeight,imgSpeed,name){
 
 	this.name = name;
 
 	this.x = x;
 	this.y = y;
+
+	this.width = displayWidth;
+	this.height = displayHeight;
 
 	this.sprite = sprite;
 
@@ -67,7 +70,7 @@ function GameObject(x,y,sprite,imgSpeed,name){
 		}
 	}
 		
-		ctx.drawImage(this.sprite.img,this.sprite.frame[this.currentFrame][0],this.sprite.frame[this.currentFrame][1],this.sprite.imgWidth,this.sprite.imgHeight,this.x,this.y,this.sprite.width,this.sprite.height)
+		ctx.drawImage(this.sprite.img,this.sprite.frame[this.currentFrame][0],this.sprite.frame[this.currentFrame][1],this.sprite.imgWidth,this.sprite.imgHeight,this.x,this.y,this.width,this.height)
 	}
 
 	
@@ -76,16 +79,13 @@ function GameObject(x,y,sprite,imgSpeed,name){
 
 
 
-function Sprite(img,imgWidth,imgHeight,displayWidth,displayHeight,frames){
+function Sprite(img,imgWidth,imgHeight,frames){
 
 	this.img = new Image();
 	this.img.src = img;
 
 	this.imgWidth = imgWidth;
 	this.imgHeight = imgHeight;
-
-	this.width = displayWidth;
-	this.height = displayHeight;
 
 	this.aFrames = frames;
 
@@ -131,8 +131,8 @@ function ord(character){
 
 
 function checkPointTouch(x,y,obj){
-	if(x >= obj.x && x <= obj.x + obj.sprite.width){
-		if(y >= obj.y && y <= obj.y + obj.sprite.height){
+	if(x >= obj.x && x <= obj.x + obj.width){
+		if(y >= obj.y && y <= obj.y + obj.height){
 			return true
 		}else{return false;}
 	}else{return false;}
