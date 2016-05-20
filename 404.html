@@ -373,6 +373,8 @@ ball.x = canvas.width / 2;
 ball.y = paddle.y - 6;
 ball.vSpeed = 10;
 ball.hSpeed = 0;
+ball.currentVSpeed = 10;
+ball.currentHSpeed = 0;
 //done creating ball
 
 setInterval(update,1000/game.fps);
@@ -388,9 +390,58 @@ function update(){
 		blocks[i].x = midPoint + blocks[i].blockX - 50;
 	}
 
+	//paddle position
+	paddle.x = mouse.x - 100;
+
+	//Ball Directions
+	if(ball.x < 0){
+		ball.currentHSpeed = ball.hSpeed;
+	}
+	if(ball.x > canvas.width){
+		ball.currentHSpeed = -ball.hSpeed;
+	}
+	if(ball.y > canvas.height){
+		ball.currentVSpeed = -ball.vSpeed;
+	}
+	if(ball.y < 0){
+		ball.currentVSpeed = ball.vSpeed;
+	}
+	for(i = 0;i < blocks.length;i++){
+		if(checkPointTouch(ball.x,ball.y,blocks[i])){
+			
+			if(ball.y > blocks[i].y + 25){
+				ball.currentVSpeed = ball.vSpeed;
+			}else{
+				ball.currentVSpeed = -ball.vSpeed;
+			}
+			blocks.splice(i,1);
+		}
+	}
+	if(checkPointTouch(ball.x,ball.y,paddle)){
+		ball.currentVSpeed = -ball.vSpeed;
+		var offset = ball.x - (paddle.x+100);
+		if(offset > 0){
+			ball.hSpeed = offset / 10;
+			ball.currentHSpeed = ball.hSpeed;
+		}else if(offset < 0){
+			offset = -offset
+			ball.hSpeed = offset / 10;
+			ball.currentHSpeed = -ball.hSpeed;
+		}else{
+			ball.hSpeed = 0;
+			ball.currentHSpeed = 0;
+		}
+	}
+
+	ball.x += ball.currentHSpeed;
+	ball.y += ball.currentVSpeed;
+
 	//drawing stuff
 	paddle.draw();
-
+	ctx.fillStyle = "#ffffff";
+	ctx.beginPath();
+	ctx.arc(ball.x, ball.y, 5, 0, 2 * Math.PI);
+	ctx.fill();
 	for(i = 0;i < blocks.length;i++){
 		blocks[i].draw();
 	}
