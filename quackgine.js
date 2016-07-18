@@ -148,3 +148,13 @@ function drawTextOutlined(text,x,y,color,outlinecolor){
 	ctx.fillStyle = color;
 	ctx.fillText(text,x,y);
 }
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+
+function getPixelColor(context,x,y){
+	var pixelData = context.getImageData(x,y,x+1,y+1);
+	return rgbToHex(pixelData.data[0],pixelData.data[1],pixelData.data[2]);
+}
