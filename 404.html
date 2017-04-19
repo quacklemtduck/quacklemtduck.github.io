@@ -10,10 +10,16 @@ canvas{
 	left:0px;
 	top:0px;
 }
+a{
+	position: absolute;
+	color: white;
+	font-size: 20px;
+}
 </style>
 </head>
 <body onresize="resizeFunction()">
 <canvas width="500" height="500" id="canvas"></canvas>
+<a href="http://quacklemtduck.github.io/">HOME</a>
 <script>
 var canvas = document.getElementById("canvas");
 canvas.width = window.innerWidth;
@@ -437,13 +443,19 @@ function update(){
 	ball.y += ball.currentVSpeed;
 
 	//drawing stuff
-	paddle.draw();
-	ctx.fillStyle = "#ffffff";
-	ctx.beginPath();
-	ctx.arc(ball.x, ball.y, 5, 0, 2 * Math.PI);
-	ctx.fill();
-	for(i = 0;i < blocks.length;i++){
-		blocks[i].draw();
+	if(blocks.length > 0){
+		paddle.draw();
+		ctx.fillStyle = "#ffffff";
+		ctx.beginPath();
+		ctx.arc(ball.x, ball.y, 5, 0, 2 * Math.PI);
+		ctx.fill();
+		for(i = 0;i < blocks.length;i++){
+			blocks[i].draw();
+		}
+	}else{
+		ctx.textAlign = "center";
+		ctx.font = "20px Arial";
+		drawTextOutlined("Congrats! You won! You should find a page that works!",canvas.width/2,canvas.height/2,"white","black");
 	}
 
 }
