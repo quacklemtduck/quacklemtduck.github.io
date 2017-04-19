@@ -154,7 +154,7 @@ function rgbToHex(r, g, b) {
 }
 
 
-function getPixelColor(context,x,y){
-	var pixelData = context.getImageData(x,y,x+1,y+1);
+function getPixelColor(x,y){
+	var pixelData = ctx.getImageData(x,y,x+1,y+1);
 	return rgbToHex(pixelData.data[0],pixelData.data[1],pixelData.data[2]);
 }
