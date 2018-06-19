@@ -2,11 +2,11 @@ var body = document.getElementsByTagName("body")[0];
 
 body.style.background = "url('https://i.imgur.com/OBB7tLg.gif')";
 
-body.innerHTML = "<center><img style='width:200px' id='bag1' src='lowrez.png'><h1 id='textBag'>BAGUETTE! HONHONHON!</h1><img style='width:200px' id='bag2' src='lowrez.png'> <a><h1>Klik for en overraskelse :)))</h1></a></center>";
+body.innerHTML = "<center><img style='width:200px' id='bag1' src='http://quacklemtduck.github.io/itk/lowrez.png'><h1 id='textBag'>BAGUETTE! HONHONHON!</h1><img style='width:200px' id='bag2' src='http://quacklemtduck.github.io/itk/lowrez.png'> <a><h1>Klik for en overraskelse :)))</h1></a></center>";
 
 //setTimeout(function () {
 var song = document.createElement("AUDIO");
-song.src="song.mp3";
+song.src="http://quacklemtduck.github.io/itk/song.mp3";
 
 body.onclick = function(){
     
