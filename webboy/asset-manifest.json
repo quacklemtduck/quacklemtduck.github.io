@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a3fd9c43.css",
+    "main.js": "/static/js/main.029129d7.js",
+    "static/js/787.b117e140.chunk.js": "/static/js/787.b117e140.chunk.js",
+    "static/media/gameboy_bg.wasm": "/static/media/gameboy_bg.785e3ee8187146a9b0f8.wasm",
+    "index.html": "/index.html",
+    "main.a3fd9c43.css.map": "/static/css/main.a3fd9c43.css.map",
+    "main.029129d7.js.map": "/static/js/main.029129d7.js.map",
+    "787.b117e140.chunk.js.map": "/static/js/787.b117e140.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a3fd9c43.css",
+    "static/js/main.029129d7.js"
+  ]
+}
