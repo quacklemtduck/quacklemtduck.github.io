@@ -383,8 +383,12 @@ ball.currentVSpeed = 10;
 ball.currentHSpeed = 0;
 //done creating ball
 
-setInterval(update,1000/game.fps);
-function update(){
+//setInterval(update,1000/game.fps);
+requestAnimationFrame(update)
+
+var prev = 0
+
+function update(delta){
 	ctx.fillStyle = "#29293d";
 	ctx.fillRect(0,0,canvas.width,canvas.height);
 
@@ -439,8 +443,14 @@ function update(){
 		}
 	}
 
-	ball.x += ball.currentHSpeed;
-	ball.y += ball.currentVSpeed;
+	let t = delta - prev
+	prev = delta
+	const d = 1000 / 60
+	t = t / d
+
+	ball.x += ball.currentHSpeed * t * 0.7;
+	ball.y += ball.currentVSpeed * t * 0.7;
+	
 
 	//drawing stuff
 	if(blocks.length > 0){
@@ -458,6 +468,7 @@ function update(){
 		drawTextOutlined("Congrats! You won! You should find a page that works!",canvas.width/2,canvas.height/2,"white","black");
 	}
 
+	requestAnimationFrame(update)
 }
 </script>
 </body>
