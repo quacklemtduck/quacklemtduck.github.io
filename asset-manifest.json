@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.a3fd9c43.css",
-    "main.js": "/static/js/main.029129d7.js",
+    "main.css": "/static/css/main.e36119b2.css",
+    "main.js": "/static/js/main.2ebcd64f.js",
     "static/js/787.b117e140.chunk.js": "/static/js/787.b117e140.chunk.js",
-    "static/media/gameboy_bg.wasm": "/static/media/gameboy_bg.785e3ee8187146a9b0f8.wasm",
+    "static/media/gameboy_bg.wasm": "/static/media/gameboy_bg.4f44d1d32a5dfffee5e0.wasm",
     "index.html": "/index.html",
-    "main.a3fd9c43.css.map": "/static/css/main.a3fd9c43.css.map",
-    "main.029129d7.js.map": "/static/js/main.029129d7.js.map",
+    "main.e36119b2.css.map": "/static/css/main.e36119b2.css.map",
+    "main.2ebcd64f.js.map": "/static/js/main.2ebcd64f.js.map",
     "787.b117e140.chunk.js.map": "/static/js/787.b117e140.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a3fd9c43.css",
-    "static/js/main.029129d7.js"
+    "static/css/main.e36119b2.css",
+    "static/js/main.2ebcd64f.js"
   ]
 }
